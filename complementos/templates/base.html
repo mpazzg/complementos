@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<meta charset="utf-8">
+	<TITLE>{% block title %} Bienvenidos {% endblock %}</TITLE>
+	<link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/media/bootstrap/css/bootstrap-responsive.css">
+	<script src="/media/js/jquery.js"></script>
+  <script src="/media/js/demo.js"></script>
+	<script src="/media/js/jquery.form.min.js"></script>
+	<script src="/media/bootstrap/js/bootstrap.js"></script>
+	<style type="text/css">
+	 body {
+	    padding-top: 50px;
+	    padding-bottom: 40px;
+	}
+	.sidebar-nav {
+	  padding: 9px 0;
+	}
+	</style>
+	<script type="text/javascript">
+	   $(document).on('ready',function(){
+		$.ajax({
+		   type:"GET",
+		   contentType:"application/json; charset=utf-8",
+		   dataType:"json",
+		   url:"/ws/productos/",
+		   success:function(response){
+			var i = (response.length-1)-2;
+		        for(i;i<=(response.length-1);i++){
+			   $('#ProductosNuevos').append("<li>"+response[i].fields.nombre+"</li>");
+			}
+		   }
+	    });
+	});
+	</script>
+	</head>
+<br><br>
+        <img src="/media/images/logo.jpg" width="140px" height="120px" border="4"/>
+        
+<BODY>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class = "navbar-inner">
+			<a class="brand" href="{% url "vista_principal" %}"> G&G Complementos</a>
+			{% if user.is_authenticated %}
+				<p class="navbar-text pull-right">
+				Usuario {{user.username}}
+				</p>
+			{% endif %}
+			<ul class="nav">
+				<li><a href="/productos/page/1/">Productos</a></li>
+                		<li><a href="{% url "vista_contacto" %}">Contacto</a></li>
+		                <li><a href="{% url "vista_about" %}">Sobre nosotro</a></li>
+				{% if user.is_authenticated %}
+               			<li><a href="{% url "vista_logout" %}"> Cerrar Sesión</a></li>
+                		{% else %}
+                		<li><a href="{% url "vista_login" %}"> Iniciar Sesión</a></li>
+                		{% endif %}
+			</ul>
+
+     </div>
+   </div>
+ </div>
+       <div class="container-fluid">
+       <div class="row-fluid">
+       <div class="span9">
+       <div class="hero-unit">
+         {% block content %}
+         {% endblock%}
+       </div>
+      </div><!--/span-->
+    <div class="span3">
+   <div class="well sidebar-nav">
+   <ul class="nav nav-list">
+    <li>Mi perfil</li>
+    <br><p align="justify">
+     {% if user.is_authenticated %}
+      <p>Bienvenido {{ user }} </p>
+      {% if user.get_profile.photo %}
+      <img src="/media/{{ user.get_profile.photo}}" width="50px" heigth="50px"/>
+      {% endif %}
+     {% else %}
+      <a href="/login/" class="btn btn-primary">Login<a>
+     {% endif %}
+     </p>
+     </ul>
+     </div><!--/.well -->
+     <div class="well sidebar-nav">
+       <ul class="nav nav-list">
+   <li class="nav-header">Mi compra</li>
+   <br><p align="justify">
+     Cesta de compra
+   </p>
+   </ul>
+   </div><!--/.well -->
+   <div class="well sidebar-nav">
+   <ul class="nav nav-list" id="ProductosNuevos">
+   <li class="nav-header">Últimos productos añadidos</li>
+   </ul>
+   </div><!--/.well -->
+   <footer>
+	<center><p>&copy Open Project 2015. Maripaz Guerrero</p></center>
+   </footer>
+   </div>
+   </div>
+</BODY>
+</HTML>
