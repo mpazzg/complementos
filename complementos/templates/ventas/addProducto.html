@@ -4,11 +4,11 @@
 	<form action="." method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ form.as_p }}
-		<input type="submit" value="Enviar">
-		<input type="reset" value="Limpiar">
+		<button type="submit" class="btn btn-small btn-primary"> Guardar</button>
+		<button type="reset" class="btn btn-small btn-primary"> Limpiar</button>
 	</form>
-<br>
+
 	{{ informacion }}
 <br>
-<a href="{% url "vista_agregar_producto" %}">Volver a la lista de Productos</a>
+<a class="btn btn-primary" href="javascript:window.history.go(-1);"> Volver a la Lista de Productos </a>
 {% endblock %}

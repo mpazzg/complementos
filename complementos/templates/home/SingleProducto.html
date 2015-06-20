@@ -3,13 +3,12 @@
 {% block content %}
 <h1>{{ producto.nombre }}</h1><br>
 <img src="/media/{{ producto.imagen }}" width="160px" heigth="160px"/>
-<br><br>
 <p> Descripción del producto: {{ producto.descripcion }}</p>
 <p> Precio: {{ producto.precio }} euros</p>
 <p> Exitencias: {{ producto.stock }} unidades</p>
+<br>
 {% if producto.stock > 0 %}
-	<a href="#"> Comprar producto </a>
+	<a class="btn btn-primary" href="#"> Comprar producto </a>
 {% endif %}
-<br><br>
-<a href="javascript:window.history.go(-1)"> Volver a la Lista de Productos </a>
+<a class="btn btn-primary" href="javascript:window.history.go(-1);"> Volver a la Lista de Productos </a>
 {% endblock %}

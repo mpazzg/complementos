@@ -1,29 +1,41 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from complementos.apps.ventas.models import producto
+from complementos.apps.ventas.models import producto, compra, cliente
 from complementos.apps.home.forms import ContactForm, LoginForm,RegisterForm
 from django.core.mail import EmailMultiAlternatives
-from django.core.paginator import Paginator,EmptyPage,InvalidPage
 from django.contrib.auth.models import User
 import django
-
+from complementos.settings import URL_LOGIN
 from django.contrib.auth import login,logout,authenticate
-from django.http import HttpResponseRedirect
-
-
-
+from django.http import HttpResponseRedirect, HttpResponse
+#PAginacion
+from django.core.paginator import Paginator,EmptyPage,InvalidPage
+from django.contrib.auth.decorators import login_required
+from django.utils import simplejson
 
 def index_view(request):
 	return render_to_response('home/index.html', context_instance=RequestContext(request))
 
-
+@login_required(login_url=URL_LOGIN)
 def about_view(request):
 	version = django.get_version()
-	mensaje = "Esta pagina ha sido creada para la venta de productos"
+	mensaje = "Pagina creada para la venta de complementos para mujer. Donde encontraras todo tipo de productos"
 	ctx = {'msg':mensaje,'version':version}
 	return render_to_response('home/about.html' ,ctx,context_instance=RequestContext(request))
 
+@login_required(login_url=URL_LOGIN)
 def productos_view(request,pagina):
+	if request.method=="POST":
+		if "product_id" in request.POST:
+			try:
+				id_producto = request.POST['product_id']
+				p = producto.objects.get(pk=id_producto)
+				mensaje = {"status":"True","product_id":p.id}
+				p.delete()
+				return HttpResponse(simplejson.dumps(mensaje),content_type='application/json')
+			except:
+				mensaje = {"status":"False"}
+				return HttpResponse(simplejson.dumps(mensaje),content_type='application/json')
 	lista_prod = producto.objects.filter(status=True)
 	paginator = Paginator(lista_prod,3) #Cuantos productos por pagina? = 3
 	try:
@@ -36,6 +48,7 @@ def productos_view(request,pagina):
 		productos = paginator.page(paginator.num_pages)		
 	ctx = {'productos':productos}
 	return render_to_response('home/productos.html',ctx,context_instance=RequestContext(request))
+
 
 def contacto_view(request):
 	info_enviado = False
@@ -114,3 +127,18 @@ def register_view(request):
 	ctx = {'form':form}
 	return render_to_response('home/register.html',ctx,context_instance=RequestContext(request))
 
+@login_required(login_url=URL_LOGIN)
+def compra_view(request,id_prod):
+	info = ""
+	if not request.user.is_authenticated():
+                return HttpResponseRedirect('/')
+	p = producto.objects.get(id=id_prod)
+	c = cliente.objects.get(nombre=request.user.username)
+	k = compra()
+	k.producto = p
+	k.cliente = c
+	k.cantidad = 1
+	k.save()
+			
+        ctx = {'producto':p}
+        return render_to_response('home/compra.html',ctx,context_instance=RequestContext(request))

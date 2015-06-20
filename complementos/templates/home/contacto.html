@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Contactanos {% endblock %}
+{% block title %}Contacta con nosotros {% endblock %}
 {% block content %}
 <br>
 {% if info_enviado %}
@@ -8,13 +8,13 @@
 	La informacion recibida fue la siguiente<br>
 	<p>Email utilizado: {{email}}</p>
 	<p>Titulo: {{titulo}}</p>
-	<p>Texto Citado:</p><br><br>{{texto}}
+	<p>Texto:</p><br><br>{{texto}}
 
 {% else %}
 	<form action="." method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
-	<input type="submit" value="Insertar"/>
+	<button class="btn btn-primary" type="submit"> Enviar comentario </a>
 	</form>
 {% endif %}
 {% endblock %}

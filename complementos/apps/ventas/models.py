@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class cliente(models.Model):
@@ -9,19 +10,19 @@ class cliente(models.Model):
 	direccion	= models.TextField(max_length=100)
 
 	def __unicode__(self):
-		nombreCompleto = "%s %s"%(self.nombre.self.apellidos)
+		nombreCompleto = "%s %s"%(self.nombre,self.apellidos)
 		return nombreCompleto
-
+	
 class producto(models.Model):
 
 	def url(self,filename):
 		ruta = "MultimediaData/Producto/%s/%s"%(self.nombre,str(filename))
 		return ruta
 
-	def thumbnail(self):
+	def foto(self):
 		return '<a href="/media/%s"><img src="/media/%s" width=50px heigth=50px/></a>'%(self.imagen,self.imagen)
 
-	thumbnail.allow_tags = True
+	foto.allow_tags = True
 
 	nombre		= models.CharField(max_length=100)
 	descripcion	= models.TextField(max_length=300)
@@ -32,3 +33,10 @@ class producto(models.Model):
 	
 	def __unicode__(self):
 		return self.nombre
+
+class compra(models.Model):
+	cliente		= models.ForeignKey(cliente)
+	producto 	= models.ForeignKey(producto)
+	cantidad	= models.IntegerField()
+	fecha		= models.DateField()
+	

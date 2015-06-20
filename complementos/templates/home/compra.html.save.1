@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %} Producto {{producto.nombre}} {% endblock %}
+{% block content %}
+<p>Su producto:  se ha comprado correctamente</p>
+<img src="/media/{{ producto.imagen }}" width="160px" heigth="160px"/>
+{% endblock %}

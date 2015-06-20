@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<HTML>
-<HEAD>
+<html lang="es">
+ <head>
 	<meta charset="utf-8">
 	<TITLE>{% block title %} Bienvenidos {% endblock %}</TITLE>
-	<link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
-	<link rel="stylesheet" href="/media/bootstrap/css/bootstrap-responsive.css">
+	<link href="/media/bootstrap/css/bootstrap.css" rel="stylesheet">
+	 <link href="/media/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	<script src="/media/js/jquery.js"></script>
-  <script src="/media/js/demo.js"></script>
+	<script src="/media/js/demo.js"></script>
 	<script src="/media/js/jquery.form.min.js"></script>
 	<script src="/media/bootstrap/js/bootstrap.js"></script>
 	<style type="text/css">
@@ -38,26 +38,25 @@
 <br><br>
         <img src="/media/images/logo.jpg" width="140px" height="120px" border="4"/>
         
-<BODY>
+<body>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class = "navbar-inner">
 			<a class="brand" href="{% url "vista_principal" %}"> G&G Complementos</a>
 			{% if user.is_authenticated %}
 				<p class="navbar-text pull-right">
-				Usuario {{user.username}}
+				Usuario: {{ user.username }}
 				</p>
 			{% endif %}
 			<ul class="nav">
 				<li><a href="/productos/page/1/">Productos</a></li>
                 		<li><a href="{% url "vista_contacto" %}">Contacto</a></li>
-		                <li><a href="{% url "vista_about" %}">Sobre nosotro</a></li>
+		                <li><a href="{% url "vista_about" %}">Sobre nosotros</a></li>
 				{% if user.is_authenticated %}
                			<li><a href="{% url "vista_logout" %}"> Cerrar Sesión</a></li>
                 		{% else %}
                 		<li><a href="{% url "vista_login" %}"> Iniciar Sesión</a></li>
                 		{% endif %}
 			</ul>
-
      </div>
    </div>
  </div>
@@ -72,7 +71,7 @@
     <div class="span3">
    <div class="well sidebar-nav">
    <ul class="nav nav-list">
-    <li>Mi perfil</li>
+    <li class="nav-header">Mi perfil</li>
     <br><p align="justify">
      {% if user.is_authenticated %}
       <p>Bienvenido {{ user }} </p>
@@ -98,10 +97,9 @@
    <li class="nav-header">Últimos productos añadidos</li>
    </ul>
    </div><!--/.well -->
-   <footer>
+   <hr>
+   </div>
+   </div>
 	<center><p>&copy Open Project 2015. Maripaz Guerrero</p></center>
-   </footer>
-   </div>
-   </div>
 </BODY>
 </HTML>
